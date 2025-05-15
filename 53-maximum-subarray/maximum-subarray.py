@@ -1,5 +1,9 @@
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
+
+        # khadane's algorithm
+
+        
         curr_sum=nums[0]
         max_sum=nums[0]
 
