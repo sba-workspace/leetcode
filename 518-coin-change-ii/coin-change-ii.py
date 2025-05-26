@@ -5,7 +5,6 @@ class Solution:
         dp[0]=1
         for coin in coins:
             for i in range(coin,amount+1):
-                if dp[i-coin]>=0:
                     dp[i]+=dp[i-coin]
 
         return dp[amount]
