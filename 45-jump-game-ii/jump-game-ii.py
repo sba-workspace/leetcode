@@ -2,6 +2,7 @@ from collections import deque
 
 class Solution:
     def jump(self, nums: List[int]) -> int:
+        #bruteforce
         n = len(nums)
         visited = [False] * n
         queue = deque([(0, 0)])  # (current_index, jumps)
