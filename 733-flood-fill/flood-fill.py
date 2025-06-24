@@ -5,19 +5,16 @@ class Solution:
         original_color=image[sr][sc]
         if original_color == color:
             return image
-        
-        q = deque([(sr, sc)])           
 
-        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        
-        
-        while q:
-            r,c=q.popleft()
+        def dfs(r,c):
+            if (r<0 or r>=n or c<0 or c>=m or image[r][c]!=original_color):
+                return
+            image[r][c]=color
 
-            if image[r][c]==original_color:
-                image[r][c]=color
-                for dr,dc in directions:
-                    nr,nc=r+dr,c+dc
-                    if 0 <= nr < n and 0 <= nc < m and image[nr][nc] == original_color:
-                        q.append((nr,nc))
+            dfs(r+1,c)
+            dfs(r,c+1)
+            dfs(r-1,c)
+            dfs(r,c-1)
+        dfs(sr,sc)
+
         return image
