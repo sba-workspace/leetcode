@@ -7,10 +7,10 @@ class Solution:
         onesRow = [sum(row) for row in grid]
         onesCol = [sum(grid[i][j] for i in range(n)) for j in range(m)]
         
-        diff = [[0] * m for _ in range(n)]
+        # diff = [[0] * m for _ in range(n)]
 
         for i in range(n):
             for j in range(m):
-                diff[i][j] = 2 * (onesRow[i] + onesCol[j]) - n - m
-
-        return diff
+                grid[i][j] = 2 * (onesRow[i] + onesCol[j]) - n - m
+        
+        return grid
