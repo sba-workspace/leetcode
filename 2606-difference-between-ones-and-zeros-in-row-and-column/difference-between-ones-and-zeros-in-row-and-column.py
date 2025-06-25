@@ -1,16 +1,11 @@
-from typing import List
+import numpy as np
 
 class Solution:
     def onesMinusZeros(self, grid: List[List[int]]) -> List[List[int]]:
-        n, m = len(grid), len(grid[0])
-        
-        onesRow = [sum(row) for row in grid]
-        onesCol = [sum(grid[i][j] for i in range(n)) for j in range(m)]
-        
-        # diff = [[0] * m for _ in range(n)]
+        grid = np.asarray(grid)
+        ones_row = grid.sum(axis=1) * 2 - len(grid)
+        ones_column = grid.sum(axis=0) * 2 - len(grid[0])
 
-        for i in range(n):
-            for j in range(m):
-                grid[i][j] = 2 * (onesRow[i] + onesCol[j]) - n - m
-        
-        return grid
+        out = ones_row[:, None] + ones_column
+
+        return out.tolist()
