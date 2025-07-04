@@ -4,7 +4,6 @@ class Solution:
         Do not return anything, modify board in-place instead.
         """
         n,m=len(board),len(board[0])
-        temp="s"
         q=deque()
 
         for i in range(n):
@@ -20,14 +19,10 @@ class Solution:
         
         while q:
             i,j=q.popleft()
-            board[i][j]="S"
-            for ii,jj in [(i+1, j), (i-1, j), (i, j+1), (i, j-1)]:
-                if not((0 <= ii < n) and (0 <= jj < m)):
-                    continue
-                if board[ii][jj]!="O":
-                    continue
-                q.append((ii,jj))
-                board[ii][jj]="S"
+            if 0 <= i < n and 0 <= j < m and board[i][j] == 'O':
+                board[i][j] = 'S'
+                for dx, dy in [(-1,0), (1,0), (0,-1), (0,1)]:
+                    q.append((i + dx, j + dy))
         for i in range(n):
             for j in range(m):
                 if board[i][j] == "O":
