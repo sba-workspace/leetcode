@@ -1,30 +1,26 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 from typing import List
 
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        visited = [False] * numCourses
-        path = [False] * numCourses
-
+        # Build graph
         adj = defaultdict(list)
-        for u, v in prerequisites:
-            adj[u].append(v)
+        in_degree = [0] * numCourses
 
-        def dfs(i):
-            visited[i] = True
-            path[i] = True
-            for nei in adj[i]:
-                if not visited[nei]:
-                    if dfs(nei):
-                        return True  # cycle detected
-                elif path[nei]:
-                    return True  # back edge found (cycle)
-            path[i] = False
-            return False  # no cycle in this path
+        for dest, src in prerequisites:
+            adj[src].append(dest)
+            in_degree[dest] += 1
 
-        for i in range(numCourses):
-            if not visited[i]:
-                if dfs(i):
-                    return False  # cycle detected, cannot finish all courses
+        # Start with courses that have no prerequisites
+        queue = deque([i for i in range(numCourses) if in_degree[i] == 0])
+        completed_courses = 0
 
-        return True  # no cycles found, all courses can be finished
+        while queue:
+            course = queue.popleft()
+            completed_courses += 1
+            for neighbor in adj[course]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+
+        return completed_courses == numCourses
