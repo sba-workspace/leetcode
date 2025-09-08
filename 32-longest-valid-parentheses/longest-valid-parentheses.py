@@ -1,14 +1,22 @@
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
-        dp = [0] * len(s)
-        max_length = 0
-
-        for i in range(1, len(s)):
-            if s[i] == ')':
-                if s[i - 1] == '(':
-                    dp[i] = (dp[i - 2] if i >= 2 else 0) + 2
-                elif i - dp[i - 1] > 0 and s[i - dp[i - 1] - 1] == '(':
-                    dp[i] = dp[i - 1] + (dp[i - dp[i - 1] - 2] if i - dp[i - 1] >= 2 else 0) + 2
-                max_length = max(max_length, dp[i])
-        
-        return max_length
+    # Initialize max_len to track the longest valid substring length
+        max_len = 0
+        # Stack to hold indices of unmatched characters, start with -1 as base
+        stack = [-1]
+        # Iterate through each character in the string with its index
+        for i in range(len(s)):
+            # If current char is '(', push its index onto the stack
+            if s[i] == '(':
+                stack.append(i)
+            else:
+                # For ')', pop the last unmatched '(' index
+                stack.pop()
+                # If stack is empty, this ')' is unmatched, push current i as new base
+                if not stack:
+                    stack.append(i)
+                else:
+                    # Calculate length of current valid substring: i - top of stack
+                    max_len = max(max_len, i - stack[-1])
+        # Return the maximum length found
+        return max_len
